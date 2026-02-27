@@ -101,7 +101,7 @@ class PlayerFocus extends StatelessWidget {
       plPlayerController.setPlaybackSpeed(
         double.parse(newSpeed.toStringAsFixed(2)),
       );
-      SmartDialog.showToast('播放速度为{plPlayerController.playbackSpeed}x');
+      SmartDialog.showToast('播放速度为${plPlayerController.playbackSpeed}x');
     }
   }
 
