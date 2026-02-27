@@ -60,7 +60,7 @@ jobs:
         run: |
           flutter pub get
           flutter build windows --release --dart-define-from-file=pili_release.json
-          flutter pub run msix:create --flutter-build-args="dart-define-from-file=pili_release.json"
+          flutter pub run msix:create
 
       - name: Prepare Upload
         run: |
