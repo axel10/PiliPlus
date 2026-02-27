@@ -52,16 +52,22 @@ jobs:
         shell: pwsh
         run: lib/scripts/build.ps1
 
-      - name: Build Windows
+      - name: Build Windows (exe)
         run: |
           fastforge package --platform windows --targets exe --flutter-build-args="dart-define-from-file=pili_release.json"
+
+      - name: Build Windows (msix)
+        run: |
+          fastforge package --platform windows --targets msix --flutter-build-args="dart-define-from-file=pili_release.json"
 
       - name: Prepare Upload
         run: |
           mkdir -p Release/PiliPlus-Win
           mkdir -p PiliPlus-Win-Setup
+          mkdir -p PiliPlus-Win-MSIX
           mv build/windows/x64/runner/Release/* Release/PiliPlus-Win/
           mv dist/**/*.exe PiliPlus-Win-Setup/PiliPlus_windows_${{env.version}}_x64_setup.exe
+          mv dist/**/*.msix PiliPlus-Win-MSIX/PiliPlus_windows_${{env.version}}_x64.msix
 
       - name: Compress
         if: ${{ github.event.inputs.tag != '' }}
@@ -78,6 +84,7 @@ jobs:
           files: |
             PiliPlus_windows_*.zip
             PiliPlus-Win-Setup/PiliPlus_windows_*.exe
+            PiliPlus-Win-MSIX/PiliPlus_windows_*.msix
 
       - name: Upload windows file release
         uses: actions/upload-artifact@v6
@@ -90,3 +97,9 @@ jobs:
         with:
           name: Windows-setup-x64-release
           path: PiliPlus-Win-Setup
+
+      - name: Upload windows msix release
+        uses: actions/upload-artifact@v6
+        with:
+          name: Windows-msix-x64-release
+          path: PiliPlus-Win-MSIX

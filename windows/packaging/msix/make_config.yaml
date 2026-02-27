@@ -1,0 +1,16 @@
+display_name: MyPiliPlus
+publisher_display_name: dom
+identity_name: com.example.mypiliplus
+msix_version: 1.0.0.0
+logo_path: windows\runner\resources\app_icon.ico
+start_menu_icon_path: windows\runner\resources\app_icon.ico
+tile_icon_path: windows\runner\resources\app_icon.ico
+vs_generated_images_folder_path: windows\runner\resources
+icons_background_color: transparent
+architecture: x64
+# Set to false to allow sideloading without Microsoft Store
+store: false
+publisher: CN=dom
+languages:
+  - en
+  - zh
