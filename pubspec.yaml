@@ -147,7 +147,7 @@ dependencies:
   #     ref: master
   canvas_danmaku:
     git:
-      url: https://github.com/bggRGjQaUbCoE/canvas_danmaku.git
+      url: https://github.com/axel10/canvas_danmaku
       ref: main
   # 状态栏图标控制
   # status_bar_control: ^3.2.1
@@ -359,6 +359,9 @@ flutter:
     - family: custom_icon
       fonts:
         - asset: assets/fonts/custom_icon.ttf
+    - family: MiSans  # 你在代码中引用的字体名称
+      fonts:
+          - asset: assets/fonts/MiSans-Regular.ttf
   #   - family: Jura-Bold
   #     fonts:
   #       - asset: assets/fonts/Jura-Bold.ttf

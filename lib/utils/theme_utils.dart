@@ -18,9 +18,10 @@ abstract final class ThemeUtils {
     final fontWeight = appFontWeight == -1
         ? null
         : FontWeight.values[appFontWeight];
-    late final textStyle = TextStyle(fontWeight: fontWeight);
+    late final textStyle = TextStyle(fontWeight: fontWeight,fontFamily: 'MiSans');
     ThemeData themeData = ThemeData(
       colorScheme: colorScheme,
+      fontFamily: 'MiSans',
       useMaterial3: true,
       textTheme: fontWeight == null
           ? null
@@ -50,10 +51,9 @@ abstract final class ThemeUtils {
         centerTitle: false,
         scrolledUnderElevation: 0,
         backgroundColor: colorScheme.surface,
-        titleTextStyle: TextStyle(
+        titleTextStyle: textStyle.copyWith(
           fontSize: 16,
           color: colorScheme.onSurface,
-          fontWeight: fontWeight,
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
@@ -63,7 +63,7 @@ abstract final class ThemeUtils {
         actionTextColor: colorScheme.primary,
         backgroundColor: colorScheme.secondaryContainer,
         closeIconColor: colorScheme.secondary,
-        contentTextStyle: TextStyle(color: colorScheme.onSecondaryContainer),
+        contentTextStyle: textStyle.copyWith(color: colorScheme.onSecondaryContainer),
         elevation: 20,
       ),
       popupMenuTheme: PopupMenuThemeData(
@@ -85,10 +85,9 @@ abstract final class ThemeUtils {
         refreshBackgroundColor: colorScheme.onSecondary,
       ),
       dialogTheme: DialogThemeData(
-        titleTextStyle: TextStyle(
+        titleTextStyle: textStyle.copyWith(
           fontSize: 18,
           color: colorScheme.onSurface,
-          fontWeight: fontWeight,
         ),
         backgroundColor: colorScheme.surface,
         constraints: const BoxConstraints(minWidth: 280, maxWidth: 420),
@@ -102,7 +101,7 @@ abstract final class ThemeUtils {
       // ignore: deprecated_member_use
       sliderTheme: const SliderThemeData(year2023: false),
       tooltipTheme: TooltipThemeData(
-        textStyle: const TextStyle(
+        textStyle: textStyle.copyWith(
           color: Colors.white,
           fontSize: 14,
         ),

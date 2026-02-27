@@ -1203,8 +1203,8 @@ class PlPlayerController with BlockConfigMixin {
       return;
     }
 
-    await _videoPlayerController?.setRate(speed);
     _playbackSpeed.value = speed;
+    await _videoPlayerController?.setRate(speed);
     if (danmakuController != null) {
       try {
         DanmakuOption currentOption = danmakuController!.option;

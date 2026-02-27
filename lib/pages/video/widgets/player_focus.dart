@@ -39,7 +39,10 @@ class PlayerFocus extends StatelessWidget {
         logicalKey == LogicalKeyboardKey.arrowLeft ||
         logicalKey == LogicalKeyboardKey.arrowRight ||
         logicalKey == LogicalKeyboardKey.arrowUp ||
-        logicalKey == LogicalKeyboardKey.arrowDown;
+        logicalKey == LogicalKeyboardKey.arrowDown ||
+        logicalKey == LogicalKeyboardKey.keyX ||
+        logicalKey == LogicalKeyboardKey.keyC ||
+        logicalKey == LogicalKeyboardKey.keyZ;
   }
 
   @override
@@ -88,6 +91,43 @@ class PlayerFocus extends StatelessWidget {
     }
   }
 
+  void _changeSpeed({required bool isIncrease}) {
+    if (hasPlayer) {
+      final double currentSpeed = plPlayerController.playbackSpeed;
+      final double speedStep = 0.05;
+      final double newSpeed = isIncrease
+          ? math.min(16.0, currentSpeed + speedStep)
+          : math.max(0.1, currentSpeed - speedStep);
+      plPlayerController.setPlaybackSpeed(
+        double.parse(newSpeed.toStringAsFixed(2)),
+      );
+      SmartDialog.showToast('播放速度为{plPlayerController.playbackSpeed}x');
+    }
+  }
+
+  void _updatePlaybackSpeed(KeyEvent event, {required bool isIncrease}) {
+    if (event is KeyDownEvent) {
+      if (hasPlayer) {
+        _changeSpeed(isIncrease: isIncrease);
+        plPlayerController
+          ..cancelLongPressTimer()
+          ..longPressTimer ??= Timer(
+            const Duration(milliseconds: 500),
+            () {
+              plPlayerController
+                ..cancelLongPressTimer()
+                ..longPressTimer = Timer.periodic(
+                  const Duration(milliseconds: 40),
+                  (_) => _changeSpeed(isIncrease: isIncrease),
+                );
+            },
+          );
+      }
+    } else if (event is KeyUpEvent) {
+      plPlayerController.cancelLongPressTimer();
+    }
+  }
+
   bool _handleKey(KeyEvent event) {
     final key = event.logicalKey;
 
@@ -108,6 +148,16 @@ class PlayerFocus extends StatelessWidget {
       } else if (event is KeyUpEvent && !plPlayerController.isLive) {
         introController!.onCancelTriple(isKeyQ);
       }
+      return true;
+    }
+
+    final isKeyX = key == LogicalKeyboardKey.keyX;
+    if (isKeyX || key == LogicalKeyboardKey.keyC) {
+      if (HardwareKeyboard.instance.isControlPressed ||
+          HardwareKeyboard.instance.isMetaPressed) {
+        return false;
+      }
+      _updatePlaybackSpeed(event, isIncrease: !isKeyX);
       return true;
     }
 
@@ -226,6 +276,11 @@ class PlayerFocus extends StatelessWidget {
               !plPlayerController.controlsLock.value,
             );
           }
+          return true;
+
+        case LogicalKeyboardKey.keyZ:
+          plPlayerController.setPlaybackSpeed(1.0);
+          SmartDialog.showToast('播放速度已被重置为1.0x');
           return true;
 
         case LogicalKeyboardKey.enter:
