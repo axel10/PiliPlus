@@ -2,10 +2,10 @@
 Type=Application
 Version=1.0
 Name=MyPiliPlus
-Comment=PiliPlus is a Bilibili desktop client.
+Comment=MyPiliPlus is a Bilibili desktop client.
 Path=/usr/bin
 Exec=mypiliplus %u
-Icon=/usr/share/pixmaps/com.example.mypiliplus.png
+Icon=/usr/share/pixmaps/com.example.piliplus.png
 Terminal=false
 Categories=Network;
 Keywords=Bilibili;Video;Stream;

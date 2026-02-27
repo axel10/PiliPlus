@@ -64,17 +64,17 @@ jobs:
 
       - name: Prepare Upload
         run: |
-          mkdir -p Release/PiliPlus-Win
-          mkdir -p PiliPlus-Win-Setup
-          mkdir -p PiliPlus-Win-MSIX
-          mv build/windows/x64/runner/Release/* Release/PiliPlus-Win/
-          mv dist/**/*.exe PiliPlus-Win-Setup/PiliPlus_windows_${{env.version}}_x64_setup.exe
-          mv build/windows/x64/runner/Release/*.msix PiliPlus-Win-MSIX/PiliPlus_windows_${{env.version}}_x64.msix
+          mkdir -p Release/MyPiliPlus-Win
+          mkdir -p MyPiliPlus-Win-Setup
+          mkdir -p MyPiliPlus-Win-MSIX
+          mv build/windows/x64/runner/Release/* Release/MyPiliPlus-Win/
+          mv dist/**/*.exe MyPiliPlus-Win-Setup/MyPiliPlus_windows_${{env.version}}_x64_setup.exe
+          mv build/windows/x64/runner/Release/*.msix MyPiliPlus-Win-MSIX/MyPiliPlus_windows_${{env.version}}_x64.msix
 
       - name: Compress
         if: ${{ github.event.inputs.tag != '' }}
         run: |
-          Compress-Archive -Path "Release/PiliPlus-Win" -DestinationPath "PiliPlus_windows_${{env.version}}_x64.zip"
+          Compress-Archive -Path "Release/MyPiliPlus-Win" -DestinationPath "MyPiliPlus_windows_${{env.version}}_x64.zip"
         shell: pwsh
 
       - name: Release
@@ -84,9 +84,9 @@ jobs:
           tag_name: ${{ github.event.inputs.tag }}
           name: ${{ github.event.inputs.tag }}
           files: |
-            PiliPlus_windows_*.zip
-            PiliPlus-Win-Setup/PiliPlus_windows_*.exe
-            PiliPlus-Win-MSIX/PiliPlus_windows_*.msix
+            MyPiliPlus_windows_*.zip
+            MyPiliPlus-Win-Setup/MyPiliPlus_windows_*.exe
+            MyPiliPlus-Win-MSIX/MyPiliPlus_windows_*.msix
 
       - name: Upload windows file release
         uses: actions/upload-artifact@v6
@@ -98,10 +98,10 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: Windows-setup-x64-release
-          path: PiliPlus-Win-Setup
+          path: MyPiliPlus-Win-Setup
 
       - name: Upload windows msix release
         uses: actions/upload-artifact@v6
         with:
           name: Windows-msix-x64-release
-          path: PiliPlus-Win-MSIX
+          path: MyPiliPlus-Win-MSIX
