@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:PiliPlus/common/widgets/button/back_to_top_button.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -65,23 +66,32 @@ class _DynamicsTabPageState extends State<DynamicsTabPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return refreshIndicator(
-      onRefresh: () {
-        dynamicsController.queryFollowUp();
-        return controller.onRefresh();
-      },
-      child: CustomScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        controller: controller.scrollController,
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.only(bottom: 100),
-            sliver: buildPage(
-              Obx(() => _buildBody(controller.loadingState.value)),
-            ),
+    return Stack(
+      children: [
+        refreshIndicator(
+          onRefresh: () {
+            dynamicsController.queryFollowUp();
+            return controller.onRefresh();
+          },
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            controller: controller.scrollController,
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.only(bottom: 100),
+                sliver: buildPage(
+                  Obx(() => _buildBody(controller.loadingState.value)),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Positioned(
+          right: 12,
+          bottom: 16,
+          child: BackToTopButton(scrollController: controller.scrollController),
+        ),
+      ],
     );
   }
 

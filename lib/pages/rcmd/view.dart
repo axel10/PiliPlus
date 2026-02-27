@@ -1,5 +1,6 @@
 import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/skeleton/video_card_v.dart';
+import 'package:PiliPlus/common/widgets/button/back_to_top_button.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/video_card/video_card_v.dart';
@@ -27,23 +28,32 @@ class _RcmdPageState extends State<RcmdPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-      clipBehavior: .hardEdge,
-      margin: const .symmetric(horizontal: StyleString.safeSpace),
-      decoration: const BoxDecoration(borderRadius: StyleString.mdRadius),
-      child: refreshIndicator(
-        onRefresh: controller.onRefresh,
-        child: CustomScrollView(
-          controller: controller.scrollController,
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            SliverPadding(
-              padding: const .only(top: StyleString.cardSpace, bottom: 100),
-              sliver: Obx(() => _buildBody(controller.loadingState.value)),
+    return Stack(
+      children: [
+        Container(
+          clipBehavior: .hardEdge,
+          margin: const .symmetric(horizontal: StyleString.safeSpace),
+          decoration: const BoxDecoration(borderRadius: StyleString.mdRadius),
+          child: refreshIndicator(
+            onRefresh: controller.onRefresh,
+            child: CustomScrollView(
+              controller: controller.scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                SliverPadding(
+                  padding: const .only(top: StyleString.cardSpace, bottom: 100),
+                  sliver: Obx(() => _buildBody(controller.loadingState.value)),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        Positioned(
+          right: 12,
+          bottom: 16,
+          child: BackToTopButton(scrollController: controller.scrollController),
+        ),
+      ],
     );
   }
 

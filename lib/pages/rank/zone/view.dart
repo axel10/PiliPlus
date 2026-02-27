@@ -1,3 +1,4 @@
+import 'package:PiliPlus/common/widgets/button/back_to_top_button.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/video_card/video_card_h.dart';
@@ -38,18 +39,27 @@ class _ZonePageState extends State<ZonePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return refreshIndicator(
-      onRefresh: controller.onRefresh,
-      child: CustomScrollView(
-        controller: controller.scrollController,
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.only(top: 7, bottom: 100),
-            sliver: Obx(() => _buildBody(controller.loadingState.value)),
+    return Stack(
+      children: [
+        refreshIndicator(
+          onRefresh: controller.onRefresh,
+          child: CustomScrollView(
+            controller: controller.scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.only(top: 7, bottom: 100),
+                sliver: Obx(() => _buildBody(controller.loadingState.value)),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Positioned(
+          right: 12,
+          bottom: 16,
+          child: BackToTopButton(scrollController: controller.scrollController),
+        ),
+      ],
     );
   }
 

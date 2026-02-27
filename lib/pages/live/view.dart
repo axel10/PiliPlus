@@ -1,5 +1,6 @@
 import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/skeleton/video_card_v.dart';
+import 'package:PiliPlus/common/widgets/button/back_to_top_button.dart';
 import 'package:PiliPlus/common/widgets/button/icon_button.dart';
 import 'package:PiliPlus/common/widgets/button/more_btn.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
@@ -48,31 +49,42 @@ class _LivePageState extends State<LivePage>
   Widget build(BuildContext context) {
     super.build(context);
     final ThemeData theme = Theme.of(context);
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
-      decoration: const BoxDecoration(borderRadius: StyleString.mdRadius),
-      child: refreshIndicator(
-        onRefresh: controller.onRefresh,
-        child: CustomScrollView(
-          controller: controller.scrollController,
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.only(
-                top: StyleString.cardSpace,
-                bottom: 100,
-              ),
-              sliver: SliverMainAxisGroup(
-                slivers: [
-                  Obx(() => _buildTop(theme, controller.topState.value)),
-                  Obx(() => _buildBody(theme, controller.loadingState.value)),
-                ],
-              ),
+    return Stack(
+      children: [
+        Container(
+          clipBehavior: Clip.hardEdge,
+          margin: const EdgeInsets.symmetric(horizontal: StyleString.safeSpace),
+          decoration: const BoxDecoration(borderRadius: StyleString.mdRadius),
+          child: refreshIndicator(
+            onRefresh: controller.onRefresh,
+            child: CustomScrollView(
+              controller: controller.scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.only(
+                    top: StyleString.cardSpace,
+                    bottom: 100,
+                  ),
+                  sliver: SliverMainAxisGroup(
+                    slivers: [
+                      Obx(() => _buildTop(theme, controller.topState.value)),
+                      Obx(
+                        () => _buildBody(theme, controller.loadingState.value),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        Positioned(
+          right: 12,
+          bottom: 16,
+          child: BackToTopButton(scrollController: controller.scrollController),
+        ),
+      ],
     );
   }
 

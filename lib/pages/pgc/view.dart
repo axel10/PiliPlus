@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:PiliPlus/common/constants.dart';
+import 'package:PiliPlus/common/widgets/button/back_to_top_button.dart';
 import 'package:PiliPlus/common/widgets/button/more_btn.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
@@ -55,27 +56,37 @@ class _PgcPageState extends State<PgcPage> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
     final ThemeData theme = Theme.of(context);
-    return refreshIndicator(
-      onRefresh: controller.onRefresh,
-      child: CustomScrollView(
-        controller: controller.scrollController,
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: [
-          _buildFollow(theme),
-          if (controller.showPgcTimeline)
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height:
-                    Grid.smallCardWidth / 2 / 0.75 +
-                    MediaQuery.textScalerOf(context).scale(96),
-                child: Obx(
-                  () => _buildTimeline(theme, controller.timelineState.value),
+    return Stack(
+      children: [
+        refreshIndicator(
+          onRefresh: controller.onRefresh,
+          child: CustomScrollView(
+            controller: controller.scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              _buildFollow(theme),
+              if (controller.showPgcTimeline)
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height:
+                        Grid.smallCardWidth / 2 / 0.75 +
+                        MediaQuery.textScalerOf(context).scale(96),
+                    child: Obx(
+                      () =>
+                          _buildTimeline(theme, controller.timelineState.value),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ..._buildRcmd(theme),
-        ],
-      ),
+              ..._buildRcmd(theme),
+            ],
+          ),
+        ),
+        Positioned(
+          right: 12,
+          bottom: 16,
+          child: BackToTopButton(scrollController: controller.scrollController),
+        ),
+      ],
     );
   }
 
