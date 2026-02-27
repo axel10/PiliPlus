@@ -295,6 +295,14 @@ dev_dependencies:
   build_runner: ^2.10.3
   flutter_native_splash: ^2.4.6
 
+  msix: ^3.16.13
+
+msix_config:
+  display_name: MyPiliPlus
+  publisher_display_name: AI
+  identity_name: com.example.mypiliplus
+  logo_path: assets/images/logo/logo.png # 必须是正方形 png
+
 flutter_launcher_icons:
   android: true
   ios: true
