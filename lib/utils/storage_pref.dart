@@ -247,7 +247,7 @@ abstract final class Pref {
   static String get hardwareDecoding => _setting.get(
     SettingBoxKey.hardwareDecoding,
     defaultValue: Platform.isAndroid
-        ? HwDecType.autoSafe.hwdec
+        ? '${HwDecType.vulkan.hwdec},${HwDecType.autoSafe.hwdec}'
         : HwDecType.auto.hwdec,
   );
 
@@ -589,7 +589,7 @@ abstract final class Pref {
       _setting.get(SettingBoxKey.optTabletNav, defaultValue: true);
 
   static bool get horizontalScreen =>
-      _setting.get(SettingBoxKey.horizontalScreen) ?? isTablet;
+      _setting.get(SettingBoxKey.horizontalScreen, defaultValue: true);
 
   static bool get isTablet {
     bool isTablet;
@@ -600,7 +600,6 @@ abstract final class Pref {
       final screenSize = view.physicalSize / view.devicePixelRatio;
       isTablet = screenSize.shortestSide >= 600;
     }
-    _setting.put(SettingBoxKey.horizontalScreen, isTablet);
     return isTablet;
   }
 

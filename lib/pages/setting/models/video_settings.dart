@@ -139,7 +139,7 @@ List<SettingsModel> get videoSettings => [
   ),
   if (kDebugMode || Platform.isAndroid)
     NormalModel(
-      title: '音频输出设备',
+      title: '音频输出设备（仅安卓生效）',
       leading: const Icon(Icons.speaker_outlined),
       getSubtitle: () => '当前：${Pref.audioOutput}',
       onTap: _showAudioOutputDialog,
@@ -388,7 +388,7 @@ Future<void> _showAudioOutputDialog(
   final res = await showDialog<List<String>>(
     context: context,
     builder: (context) => OrderedMultiSelectDialog<String>(
-      title: '音频输出设备',
+      title: '音频输出设备（仅安卓生效）',
       initValues: Pref.audioOutput.split(','),
       values: {
         for (final e in AudioOutput.values) e.name: e.label,
