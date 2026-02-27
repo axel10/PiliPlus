@@ -239,12 +239,23 @@ class _MainAppState extends PopScopeState<MainApp>
 
   static void _onBack() {
     if (Platform.isAndroid) {
-      Utils.channel.invokeMethod('back');
+      Utils.channel.invokeMethod('back').catchError((e) {
+        SystemNavigator.pop();
+      });
+    } else {
+      SystemNavigator.pop();
     }
   }
 
   @override
+  void onPopInvoked(bool didPop) {
+    if (didPop) return;
+    onPopInvokedWithResult(didPop, null);
+  }
+
+  @override
   void onPopInvokedWithResult(bool didPop, Object? result) {
+    if (didPop) return;
     if (_mainController.directExitOnBack) {
       _onBack();
     } else {

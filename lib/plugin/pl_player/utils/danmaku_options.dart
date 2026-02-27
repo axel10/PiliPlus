@@ -3,6 +3,8 @@ import 'package:PiliPlus/utils/storage.dart';
 import 'package:PiliPlus/utils/storage_key.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:canvas_danmaku/canvas_danmaku.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 abstract final class DanmakuOptions {
   static final Set<int> blockTypes = Pref.danmakuBlockType;
@@ -26,7 +28,9 @@ abstract final class DanmakuOptions {
   static DanmakuOption get({
     required bool notFullscreen,
     double speed = 1.0,
+    String? fontFamily,
   }) {
+    fontFamily ??= Theme.of(Get.context!).textTheme.bodyMedium!.fontFamily;
     return DanmakuOption(
       fontSize: 15 * (notFullscreen ? danmakuFontScale : danmakuFontScaleFS),
       fontWeight: danmakuFontWeight,
@@ -43,6 +47,7 @@ abstract final class DanmakuOptions {
       static2Scroll: danmakuStatic2Scroll,
       safeArea: true,
       lineHeight: danmakuLineHeight,
+      fontFamily: fontFamily,
     );
   }
 

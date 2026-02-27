@@ -12,6 +12,9 @@ abstract class PopScopeState<T extends StatefulWidget> extends State<T>
   void onPopInvoked(bool didPop) {}
 
   @override
+  void onPopInvokedWithResult(bool didPop, T? result) {}
+
+  @override
   late final ValueNotifier<bool> canPopNotifier;
 
   void initCanPopNotifier() {
