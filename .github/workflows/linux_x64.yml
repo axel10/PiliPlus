@@ -83,6 +83,10 @@ jobs:
           cp ../assets/linux/com.example.mypiliplus.desktop usr/share/applications
           cp ../assets/images/logo/logo.png usr/share/icons/hicolor/512x512/apps/mypiliplus.png
 
+          printf "创建 bin 链接...\n"
+          mkdir -p usr/bin
+          ln -sf /opt/MyPiliPlus/mypiliplus usr/bin/mypiliplus
+
           printf "修改控制文件...\n"
           # 替换版本号
           sed -i  "2s/version_need_change/${{ env.version }}/g" DEBIAN/control
@@ -223,9 +227,9 @@ jobs:
           APPRUN_EOF
           chmod +x "$APPDIR/AppRun"
 
-          printf "修改桌面文件中的 Exec 路径...\n"
-          sed -i 's|Exec=mypiliplus|Exec=mypiliplus|g' "$APPDIR/com.example.mypiliplus.desktop"
-          sed -i 's|Icon=mypiliplus|Icon=mypiliplus|g' "$APPDIR/com.example.mypiliplus.desktop"
+          printf "修改桌面文件中的 Exec 和 Icon 路径...\n"
+          sed -i 's|^Exec=.*|Exec=mypiliplus %u|g' "$APPDIR/com.example.mypiliplus.desktop"
+          sed -i 's|^Icon=.*|Icon=mypiliplus|g' "$APPDIR/com.example.mypiliplus.desktop"
 
           printf "打包 AppImage...\n"
           ARCH=x86_64 ./appimagetool-x86_64.AppImage "$APPDIR" "MyPiliPlus_linux_${{ env.version }}_amd64.AppImage"

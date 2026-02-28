@@ -67,9 +67,9 @@ jobs:
           mkdir -p Release/MyPiliPlus-Win
           mkdir -p MyPiliPlus-Win-Setup
           mkdir -p MyPiliPlus-Win-MSIX
-          mv build/windows/x64/runner/Release/* Release/MyPiliPlus-Win/
-          mv dist/**/*.exe MyPiliPlus-Win-Setup/MyPiliPlus_windows_${{env.version}}_x64_setup.exe
           mv build/windows/x64/runner/Release/*.msix MyPiliPlus-Win-MSIX/MyPiliPlus_windows_${{env.version}}_x64.msix
+          mv dist/**/*.exe MyPiliPlus-Win-Setup/MyPiliPlus_windows_${{env.version}}_x64_setup.exe
+          mv build/windows/x64/runner/Release/* Release/MyPiliPlus-Win/
 
       - name: Compress
         if: ${{ github.event.inputs.tag != '' }}
