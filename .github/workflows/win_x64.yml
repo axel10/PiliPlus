@@ -65,11 +65,10 @@ jobs:
       - name: Prepare Upload
         run: |
           mkdir -p Release/MyPiliPlus-Win
-          mkdir -p MyPiliPlus-Win-Setup
-          mkdir -p MyPiliPlus-Win-MSIX
-          mv build/windows/x64/runner/Release/*.msix MyPiliPlus-Win-MSIX/MyPiliPlus_windows_${{env.version}}_x64.msix
-          mv dist/**/*.exe MyPiliPlus-Win-Setup/MyPiliPlus_windows_${{env.version}}_x64_setup.exe
+          mv build/windows/x64/runner/Release/*.msix MyPiliPlus_windows_${{env.version}}_x64.msix
+          mv dist/**/*.exe MyPiliPlus_windows_${{env.version}}_x64_setup.exe
           mv build/windows/x64/runner/Release/* Release/MyPiliPlus-Win/
+        shell: pwsh
 
       - name: Compress
         if: ${{ github.event.inputs.tag != '' }}
@@ -85,23 +84,23 @@ jobs:
           name: ${{ github.event.inputs.tag }}
           files: |
             MyPiliPlus_windows_*.zip
-            MyPiliPlus-Win-Setup/MyPiliPlus_windows_*.exe
-            MyPiliPlus-Win-MSIX/MyPiliPlus_windows_*.msix
+            MyPiliPlus_windows_*_setup.exe
+            MyPiliPlus_windows_*.msix
 
       - name: Upload windows file release
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: Windows-file-x64-release
           path: Release
 
       - name: Upload windows setup release
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: Windows-setup-x64-release
-          path: MyPiliPlus-Win-Setup
+          path: MyPiliPlus_windows_*_setup.exe
 
       - name: Upload windows msix release
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: Windows-msix-x64-release
-          path: MyPiliPlus-Win-MSIX
+          path: MyPiliPlus_windows_*.msix
