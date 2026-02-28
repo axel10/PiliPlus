@@ -80,8 +80,8 @@ jobs:
           printf "复制文件...\n"
           cp -r ../build/linux/x64/release/bundle/* opt/MyPiliPlus
           cp -r ../assets/linux/DEBIAN .
-          cp ../assets/linux/com.example.piliplus.desktop usr/share/applications
-          cp ../assets/images/logo/logo.png usr/share/icons/hicolor/512x512/apps/piliplus.png
+          cp ../assets/linux/com.example.mypiliplus.desktop usr/share/applications
+          cp ../assets/images/logo/logo.png usr/share/icons/hicolor/512x512/apps/mypiliplus.png
 
           printf "修改控制文件...\n"
           # 替换版本号
@@ -94,7 +94,7 @@ jobs:
           sed -i "9s/size_need_change/${SIZE_KB}/g" DEBIAN/control
 
           printf "生成并写入 md5sums ...\n"
-          md5sum opt/MyPiliPlus/piliplus >> DEBIAN/md5sums
+          md5sum opt/MyPiliPlus/mypiliplus >> DEBIAN/md5sums
           md5sum opt/MyPiliPlus/lib/* >> DEBIAN/md5sums
           md5sum opt/MyPiliPlus/data/icudtl.dat >> DEBIAN/md5sums
 
@@ -119,28 +119,28 @@ jobs:
 
           printf "准备源码归档（仅包含运行时与元数据）...\n"
           DATE="$(date '+%a %b %d %Y')"
-          SRC_DIR="$PWD/piliplus-${{ env.version }}"
+          SRC_DIR="$PWD/mypiliplus-${{ env.version }}"
           mkdir -p "$SRC_DIR/bundle" "$SRC_DIR/assets"
           cp -r build/linux/x64/release/bundle/* "$SRC_DIR/bundle/"
-          cp assets/linux/com.example.piliplus.desktop "$SRC_DIR/assets/com.example.piliplus.desktop"
-          cp assets/images/logo/logo.png "$SRC_DIR/assets/piliplus.png"
-          tar -zcvf "$RPM_BUILD_ROOT/SOURCES/piliplus-${{ env.version }}.tar.gz" -C "$PWD" "piliplus-${{ env.version }}"
+          cp assets/linux/com.example.mypiliplus.desktop "$SRC_DIR/assets/com.example.mypiliplus.desktop"
+          cp assets/images/logo/logo.png "$SRC_DIR/assets/mypiliplus.png"
+          tar -zcvf "$RPM_BUILD_ROOT/SOURCES/mypiliplus-${{ env.version }}.tar.gz" -C "$PWD" "mypiliplus-${{ env.version }}"
 
           printf "生成 spec 文件...\n"
-          cat > "$RPM_BUILD_ROOT/SPECS/piliplus.spec" <<EOF
-          Name:           piliplus
+          cat > "$RPM_BUILD_ROOT/SPECS/mypiliplus.spec" <<EOF
+          Name:           mypiliplus
           Version:        ${{ env.version }}
           Release:        1%{?dist}
           Summary:        MyPiliPlus Linux Version
           License:        GPL-3.0
-          Source0:        piliplus-${{ env.version }}.tar.gz
+          Source0:        mypiliplus-${{ env.version }}.tar.gz
           Requires:       desktop-file-utils, hicolor-icon-theme
 
           %description
           使用 Flutter 开发的 BiliBili 第三方客户端
 
           %prep
-          %setup -q -n piliplus-${{ env.version }}
+          %setup -q -n mypiliplus-${{ env.version }}
 
           %build
 
@@ -149,16 +149,16 @@ jobs:
           cp -r bundle/* %{buildroot}/opt/MyPiliPlus/
 
           # 二进制权限与命令行入口
-          chmod 755 %{buildroot}/opt/MyPiliPlus/piliplus
+          chmod 755 %{buildroot}/opt/MyPiliPlus/mypiliplus
           mkdir -p %{buildroot}/usr/bin
-          ln -sf /opt/MyPiliPlus/piliplus %{buildroot}/usr/bin/piliplus
+          ln -sf /opt/MyPiliPlus/mypiliplus %{buildroot}/usr/bin/mypiliplus
 
           # 桌面集成
           mkdir -p %{buildroot}/usr/share/applications
-          install -m 644 assets/com.example.piliplus.desktop %{buildroot}/usr/share/applications/com.example.piliplus.desktop
+          install -m 644 assets/com.example.mypiliplus.desktop %{buildroot}/usr/share/applications/com.example.mypiliplus.desktop
 
           mkdir -p %{buildroot}/usr/share/icons/hicolor/512x512/apps
-          install -m 644 assets/piliplus.png %{buildroot}/usr/share/icons/hicolor/512x512/apps/piliplus.png
+          install -m 644 assets/mypiliplus.png %{buildroot}/usr/share/icons/hicolor/512x512/apps/mypiliplus.png
 
           %post
           update-desktop-database -q || true
@@ -170,19 +170,19 @@ jobs:
 
           %files
           /opt/MyPiliPlus
-          /usr/bin/piliplus
-          /usr/share/applications/com.example.piliplus.desktop
-          /usr/share/icons/hicolor/512x512/apps/piliplus.png
+          /usr/bin/mypiliplus
+          /usr/share/applications/com.example.mypiliplus.desktop
+          /usr/share/icons/hicolor/512x512/apps/mypiliplus.png
 
           %changelog
           * DATE - ${{ env.version }}-1
           - Initial RPM release
           EOF
 
-          sed -i "s/DATE/${DATE}/g" "$RPM_BUILD_ROOT/SPECS/piliplus.spec"
+          sed -i "s/DATE/${DATE}/g" "$RPM_BUILD_ROOT/SPECS/mypiliplus.spec"
 
           printf "构建 RPM 包...\n"
-          rpmbuild --define "_topdir $RPM_BUILD_ROOT" -bb "$RPM_BUILD_ROOT/SPECS/piliplus.spec"
+          rpmbuild --define "_topdir $RPM_BUILD_ROOT" -bb "$RPM_BUILD_ROOT/SPECS/mypiliplus.spec"
 
           printf "移动生成的 RPM...\n"
           find "$RPM_BUILD_ROOT/RPMS" -name "*.rpm" -exec mv {} "MyPiliPlus_linux_${{ env.version }}_amd64.rpm" \;
@@ -207,10 +207,10 @@ jobs:
           cp -r build/linux/x64/release/bundle/* "$APPDIR/usr/bin/"
 
           printf "复制桌面文件和图标...\n"
-          cp assets/linux/com.example.piliplus.desktop "$APPDIR/com.example.piliplus.desktop"
-          cp assets/linux/com.example.piliplus.desktop "$APPDIR/usr/share/applications/com.example.piliplus.desktop"
-          cp assets/images/logo/logo.png "$APPDIR/piliplus.png"
-          cp assets/images/logo/logo.png "$APPDIR/usr/share/icons/hicolor/512x512/apps/piliplus.png"
+          cp assets/linux/com.example.mypiliplus.desktop "$APPDIR/com.example.mypiliplus.desktop"
+          cp assets/linux/com.example.mypiliplus.desktop "$APPDIR/usr/share/applications/com.example.mypiliplus.desktop"
+          cp assets/images/logo/logo.png "$APPDIR/mypiliplus.png"
+          cp assets/images/logo/logo.png "$APPDIR/usr/share/icons/hicolor/512x512/apps/mypiliplus.png"
 
           printf "创建 AppRun 启动脚本...\n"
           cat > "$APPDIR/AppRun" <<'APPRUN_EOF'
@@ -219,13 +219,13 @@ jobs:
           HERE=${SELF%/*}
           export PATH="${HERE}/usr/bin:${PATH}"
           export LD_LIBRARY_PATH="${HERE}/usr/lib:${LD_LIBRARY_PATH}"
-          exec "${HERE}/usr/bin/piliplus" "$@"
+          exec "${HERE}/usr/bin/mypiliplus" "$@"
           APPRUN_EOF
           chmod +x "$APPDIR/AppRun"
 
           printf "修改桌面文件中的 Exec 路径...\n"
-          sed -i 's|Exec=piliplus|Exec=piliplus|g' "$APPDIR/com.example.piliplus.desktop"
-          sed -i 's|Icon=piliplus|Icon=piliplus|g' "$APPDIR/com.example.piliplus.desktop"
+          sed -i 's|Exec=mypiliplus|Exec=mypiliplus|g' "$APPDIR/com.example.mypiliplus.desktop"
+          sed -i 's|Icon=mypiliplus|Icon=mypiliplus|g' "$APPDIR/com.example.mypiliplus.desktop"
 
           printf "打包 AppImage...\n"
           ARCH=x86_64 ./appimagetool-x86_64.AppImage "$APPDIR" "MyPiliPlus_linux_${{ env.version }}_amd64.AppImage"
