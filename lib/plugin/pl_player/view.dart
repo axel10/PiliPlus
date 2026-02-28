@@ -2004,7 +2004,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
           }),
       ],
     );
-    if (PlatformUtils.isDesktop) {
+    // if (PlatformUtils.isDesktop) {
       return Obx(
         () => MouseRegion(
           cursor: !plPlayerController.showControls.value && isFullScreen
@@ -2017,8 +2017,8 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
           child: child,
         ),
       );
-    }
-    return child;
+    // }
+    // return child;
   }
 
   Widget get _videoWidget {
