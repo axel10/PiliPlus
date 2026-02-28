@@ -228,8 +228,8 @@ jobs:
           chmod +x "$APPDIR/AppRun"
 
           printf "修改桌面文件中的 Exec 和 Icon 路径...\n"
-          sed -i 's|^Exec=.*|Exec=mypiliplus %u|g' "$APPDIR/com.example.mypiliplus.desktop"
-          sed -i 's|^Icon=.*|Icon=mypiliplus|g' "$APPDIR/com.example.mypiliplus.desktop"
+          find "$APPDIR" -name "*.desktop" -exec sed -i 's|^Exec=.*|Exec=mypiliplus %u|g' {} +
+          find "$APPDIR" -name "*.desktop" -exec sed -i 's|^Icon=.*|Icon=mypiliplus|g' {} +
 
           printf "打包 AppImage...\n"
           ARCH=x86_64 ./appimagetool-x86_64.AppImage "$APPDIR" "MyPiliPlus_linux_${{ env.version }}_amd64.AppImage"
